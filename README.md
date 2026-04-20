@@ -3,7 +3,7 @@
 Install globally with one command:
 
 ```bash
-npx skills add chenhuayi83/agent-query-layer-skill-pack -g -y
+npx skills add AgentQL/skills -g -y
 ```
 
 This repository publishes the installable skill bundle for Agent Query Layer.
@@ -23,17 +23,12 @@ A private MCP companion may still exist as separately provisioned companion wiri
 For supported service names and routing guidance, read `references/capabilities.md` after install.
 For copy-ready smoke checks against the active hosted surfaces, read `references/quickstart.md`.
 
-## Test Environment
+## Hosted Production Endpoints
 
-This test deployment is currently available for validation:
+- Gateway base URL: `https://gw-aql.tomo.services`
+- Gateway WebSocket URL: `wss://gw-aql.tomo.services/v1/market/ws`
+- BSC JSON-RPC URL: `https://gw-aql.tomo.services/rpc/bsc`
+- Solana JSON-RPC URL: `https://gw-aql.tomo.services/rpc/solana`
+- Hosted MCP server URL: `https://mcp-aql.tomo.services`
 
-- Test gateway base URL: `http://43.135.176.179:8080`
-- Test gateway WebSocket URL: `ws://43.135.176.179:8080/v1/market/ws`
-- Published gateway base URL: `https://gateway.chainrpc.io`
-- Published gateway WebSocket URL: `wss://gateway.chainrpc.io/v1/market/ws`
-- Published BSC JSON-RPC URL: `https://gateway.chainrpc.io/rpc/bsc`
-- Published Solana JSON-RPC URL: `https://gateway.chainrpc.io/rpc/solana`
-- Optional private MCP URL when separately provisioned for your workspace: `https://mcp.chainrpc.io`
-
-Use the test URLs when validating the latest test-node deployment.
-Use the published hosted URLs above when validating the default hosted install flow.
+Use the hosted production endpoints above for the default install and validation flow.

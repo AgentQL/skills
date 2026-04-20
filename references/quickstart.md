@@ -1,21 +1,14 @@
 # Quickstart
 
-Use this file when you want to validate the skill against the active test deployment without reverse-engineering the gateway flow first.
+Use this file when you want to validate the skill against the active hosted production deployment without reverse-engineering the gateway flow first.
 
 ## Current Endpoints
 
-### Test Deployment
-
-- Gateway base URL: `http://43.135.176.179:8080`
-- Gateway WebSocket URL: `ws://43.135.176.179:8080/v1/market/ws`
-
-### Published Hosted Endpoints
-
-- Gateway base URL: `https://gateway.chainrpc.io`
-- Gateway WebSocket URL: `wss://gateway.chainrpc.io/v1/market/ws`
-- BSC JSON-RPC URL: `https://gateway.chainrpc.io/rpc/bsc`
-- Solana JSON-RPC URL: `https://gateway.chainrpc.io/rpc/solana`
-- Optional private MCP URL when your workspace setup explicitly includes one: `https://mcp.chainrpc.io`
+- Gateway base URL: `https://gw-aql.tomo.services`
+- Gateway WebSocket URL: `wss://gw-aql.tomo.services/v1/market/ws`
+- BSC JSON-RPC URL: `https://gw-aql.tomo.services/rpc/bsc`
+- Solana JSON-RPC URL: `https://gw-aql.tomo.services/rpc/solana`
+- Hosted MCP server URL: `https://mcp-aql.tomo.services`
 
 ## Prerequisite
 
@@ -28,17 +21,17 @@ export AQL_WORKSPACE_API_KEY="<workspace_api_key>"
 ## Fast Health Check
 
 ```bash
-curl http://43.135.176.179:8080/
+curl -sS https://gw-aql.tomo.services/healthz
 ```
 
 Expected:
 
-- gateway root returns `404 Not Found`
+- returns `{"service":"gateway","status":"ok"}`
 
 ## Gateway REST Price Snapshot
 
 ```bash
-curl -sS -G "http://43.135.176.179:8080/v1/market/price-snapshot" \
+curl -sS -G "https://gw-aql.tomo.services/v1/market/price-snapshot" \
   -H "Authorization: Bearer $AQL_WORKSPACE_API_KEY" \
   --data-urlencode "market_kind=dex" \
   --data-urlencode "chain=bsc" \
@@ -48,7 +41,7 @@ curl -sS -G "http://43.135.176.179:8080/v1/market/price-snapshot" \
 ## Gateway REST CEX Market Profile
 
 ```bash
-curl -sS -G "http://43.135.176.179:8080/v1/market/market-profile" \
+curl -sS -G "https://gw-aql.tomo.services/v1/market/market-profile" \
   -H "Authorization: Bearer $AQL_WORKSPACE_API_KEY" \
   --data-urlencode "market_kind=cex" \
   --data-urlencode "symbol=BTCUSDT"
@@ -59,7 +52,7 @@ curl -sS -G "http://43.135.176.179:8080/v1/market/market-profile" \
 Use a websocket client such as `wscat` from the same machine where the skill is installed:
 
 ```bash
-npx -y wscat -c "ws://43.135.176.179:8080/v1/market/ws" \
+npx -y wscat -c "wss://gw-aql.tomo.services/v1/market/ws" \
   -H "Authorization: Bearer $AQL_WORKSPACE_API_KEY"
 ```
 
@@ -82,19 +75,18 @@ cat >/tmp/aql-rpc-bsc.json <<'JSON'
 JSON
 
 curl -sS \
-  -X POST http://43.135.176.179:8080/rpc/bsc \
+  -X POST https://gw-aql.tomo.services/rpc/bsc \
   -H "Authorization: Bearer $AQL_WORKSPACE_API_KEY" \
   -H "Content-Type: application/json" \
   --data-binary @/tmp/aql-rpc-bsc.json
 ```
 
-## Optional Private MCP Companion
+## Hosted MCP Server
 
-- Only use a private MCP endpoint when your workspace setup explicitly includes one.
-- A private MCP companion is not required for the standard hosted validation checks above.
+- Use `https://mcp-aql.tomo.services` when your workflow explicitly needs the hosted MCP surface.
+- Keep the hosted MCP server URL separate from the gateway base URL and raw gateway routes.
 
 ## How To Use These Checks
 
-- Use the test deployment when validating the latest node rollout.
-- Use the published hosted endpoints when validating the default hosted install path.
+- Use the hosted production endpoints above for the default install and validation flow.
 - If a live call fails, report the actual transport or auth failure instead of answering from memory.
